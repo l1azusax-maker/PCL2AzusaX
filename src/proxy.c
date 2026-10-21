@@ -316,9 +316,28 @@ static BOOL ExtractResourceToDir(HMODULE hmod, int resId, const WCHAR* dir, cons
     return ok && written == size;
 }
 
+typedef struct _FINDWND { DWORD pid; HWND hwnd; } FINDWND;
+
+static BOOL CALLBACK FindMainWindowProc(HWND h, LPARAM lp)
+{
+    FINDWND* f = (FINDWND*)lp;
+    DWORD pid = 0;
+    GetWindowThreadProcessId(h, &pid);
+    if (pid == f->pid && IsWindowVisible(h) && GetWindow(h, GW_OWNER) == NULL) {
+        f->hwnd = h;
+        return FALSE;
+    }
+    return TRUE;
+}
+
 /*
  * PCL-CE runs on CoreCLR (.NET 10); PCL2 runs on the desktop CLR (.NET Framework 4.x).
  * The two runtimes cannot share a process, so only inject when clr.dll is the active one.
+ *
+ * Timing matters: ExecuteInDefaultAppDomain fails while the CLR is still warming up or
+ * before the PCL assembly is loaded, and that happens much more often when a proxy/VPN
+ * (Clash, TUN adapter, DNS override) stretches out PCL2's startup. So wait for the host's
+ * main window first, then inject with retries instead of a single shot.
  */
 static DWORD WINAPI ManagedPayloadThread(LPVOID param)
 {
@@ -337,7 +356,16 @@ static DWORD WINAPI ManagedPayloadThread(LPVOID param)
         return 0;
     }
 
-    Sleep(1200); /* start patching as early as the managed host is up */
+    /* Wait for the shell window: by then the CLR is up and the PCL assembly is loaded. */
+    FINDWND f;
+    f.pid = GetCurrentProcessId();
+    f.hwnd = NULL;
+    int waited = 0;
+    for (int i = 0; i < 160 && f.hwnd == NULL; i++) {
+        EnumWindows(FindMainWindowProc, (LPARAM)&f);
+        if (f.hwnd == NULL) { Sleep(250); waited += 250; }
+    }
+    LogA("host main window ready after %d ms (hwnd=%p)", waited, (void*)f.hwnd);
 
     WCHAR tmp[MAX_PATH], dir[MAX_PATH], payloadPath[MAX_PATH], harmonyPath[MAX_PATH];
     if (GetTempPathW(MAX_PATH - 64, tmp) == 0) return 0;
@@ -354,8 +382,18 @@ static DWORD WINAPI ManagedPayloadThread(LPVOID param)
     }
 
     DWORD ret = 0xFFFFFFFF;
-    int ok = RunManagedPayloadW(payloadPath, L"Pcl2DownloadUnlock", L"Entry", &ret);
-    LogA("PCL2 payload: invoked=%d result=%lu", ok, (unsigned long)ret);
+    int ok = 0;
+    for (int attempt = 1; attempt <= 30; attempt++) {
+        ret = 0xFFFFFFFF;
+        ok = RunManagedPayloadW(payloadPath, L"Pcl2DownloadUnlock", L"Entry", &ret);
+        if (ok && ret == 0) {
+            LogA("PCL2 payload applied on attempt %d", attempt);
+            return 0;
+        }
+        LogA("PCL2 payload attempt %d: invoked=%d result=%lu", attempt, ok, (unsigned long)ret);
+        Sleep(1000);
+    }
+    LogA("PCL2 payload FAILED after 30 attempts");
     return 0;
 }
 

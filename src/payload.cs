@@ -52,20 +52,40 @@ public static class Pcl2DownloadUnlock
         catch { }
     }
 
+    private static volatile bool _applied;
+
     public static int Entry(string arg)
     {
+        if (_applied) { Log("entry: already applied, nothing to do"); return 0; }
+
         Log("entry, arg=" + arg);
         try
         {
             var asm = FindPclAssembly();
-            if (asm == null) { Log("PCL assembly not loaded"); return 1; }
+            if (asm == null) { Log("PCL assembly not loaded yet"); return 1; }
             Log("assembly: " + asm.FullName);
 
             var pageType = asm.GetType("PCL.PageDownloadInstall", false);
-            if (pageType == null) { Log("type PCL.PageDownloadInstall not found"); return 2; }
+            if (pageType == null)
+            {
+                Log("type PCL.PageDownloadInstall not found (version drift?)");
+                return 2;
+            }
 
             var loaderInit = pageType.GetMethod("LoaderInit", All);
-            if (loaderInit == null) { Log("LoaderInit not found"); return 3; }
+            if (loaderInit == null)
+            {
+                var candidates = new System.Collections.Generic.List<string>();
+                foreach (var m in pageType.GetMethods(All))
+                {
+                    if (m.Name.IndexOf("Loader", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        m.Name.IndexOf("Init", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                        m.Name.IndexOf("Download", StringComparison.OrdinalIgnoreCase) >= 0)
+                        candidates.Add(m.Name);
+                }
+                Log("LoaderInit not found (version drift?). candidates: " + string.Join(", ", candidates.ToArray()));
+                return 3;
+            }
 
             var prefix = typeof(Pcl2DownloadUnlock).GetMethod("LoaderInitPrefix", All);
             var harmony = new Harmony("pcl2.download.unlock");
@@ -77,6 +97,7 @@ public static class Pcl2DownloadUnlock
             Log("patched entries: " + string.Join(" | ", patched.ToArray()));
             Log("target: " + loaderInit.DeclaringType.FullName + "." + loaderInit.Name +
                 " virtual=" + loaderInit.IsVirtual);
+            _applied = true;
             return 0;
         }
         catch (Exception ex)

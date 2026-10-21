@@ -167,3 +167,33 @@ build.bat
 
 - `test/verify.c`：独立复现 `RegionPolicy.Evaluate()` 判定链，输出 `Classification=Other, IsRestricted=0`。
 - `tools/ildump.cs`：Mono.Cecil 反编译器，用来确认 PCL2 的 `LoaderInit` 里 Else 分支确实已被删除。
+
+## 八、挂了代理 / TUN 之后失效怎么查
+
+先打开 `%TEMP%\PCLRegionUnlock.log`，对着时间戳看属于哪一种：
+
+**① 日志没有新增（还停在上一次的记录）**
+
+说明 `dwmapi.dll` 根本没被加载 —— 进程里已经有别的模块抢先加载了系统那份 `dwmapi.dll`，Windows 按 basename 去重，我们的就永远不会进来。这种情况需要换劫持点（`uxtheme.dll` / `winmm.dll` 版本），把日志发出来即可。
+
+**② 只有 `PCL2 payload attempt N: invoked=... result=...`，没有 `applied`**
+
+注入失败。从 v1.1.0 起会自动重试 30 次（每秒一次），专门覆盖 Clash TUN 网卡拖慢 PCL2 启动、CLR 还没就绪就注入的情况。
+
+如果仍然失败，`result` 的值能直接定位：
+
+| result | 含义 |
+|---|---|
+| 1 | PCL 程序集还没加载进来 |
+| 2 | `PCL.PageDownloadInstall` 类型缺失 |
+| 3 | `LoaderInit` 方法缺失（PCL2 换版本了，日志里会列出候选方法名） |
+
+**③ 有 `applied on attempt N`，但下载页仍然显示「为遵守相关法律法规」**
+
+patch 打进内存了，但页面在 patch 之前就已经初始化过。正常流程下 `PageDownloadInstall` 是点「下载」时才创建的，所以不会走到这里；重启一次启动器再进下载页即可。
+
+**④ 有 `applied`、版本列表也正常，但下载慢 / 报错**
+
+那不是解锁失效。挂 TUN 后 PCL2 的下载源（BMCLAPI / Mojang）被代理节点转发，国内镜像反而绕远路。去 `设置 → 下载 → 下载源` 换一个，或者给 PCL2 配直连规则。
+
+> 实测结论：系统代理本身不影响注入。在 `ProxyEnable=1 / 127.0.0.1:7897`（Clash Verge 默认混合端口）环境下，日志仍是 `applied on attempt 1`，下载页版本列表正常。真正要防的是 TUN 模式拖慢启动带来的时序问题，v1.1.0 的「等窗口 + 重试」就是为此加的。
