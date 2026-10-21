@@ -1,0 +1,96 @@
+/* AUTO-GENERATED */
+PVOID FailStub(void);
+
+/* forwarder slots (referenced from stubs.asm) */
+PVOID pfn_DwmpDxGetWindowSharedSurface = (PVOID)FailStub;
+PVOID pfn_DwmpDxUpdateWindowSharedSurface = (PVOID)FailStub;
+PVOID pfn_DwmEnableComposition = (PVOID)FailStub;
+PVOID pfn_DllCanUnloadNow = (PVOID)FailStub;
+PVOID pfn_DllGetClassObject = (PVOID)FailStub;
+PVOID pfn_DwmAttachMilContent = (PVOID)FailStub;
+PVOID pfn_DwmDefWindowProc = (PVOID)FailStub;
+PVOID pfn_DwmDetachMilContent = (PVOID)FailStub;
+PVOID pfn_DwmEnableBlurBehindWindow = (PVOID)FailStub;
+PVOID pfn_DwmEnableMMCSS = (PVOID)FailStub;
+PVOID pfn_DwmExtendFrameIntoClientArea = (PVOID)FailStub;
+PVOID pfn_DwmFlush = (PVOID)FailStub;
+PVOID pfn_DwmGetColorizationColor = (PVOID)FailStub;
+PVOID pfn_DwmGetCompositionTimingInfo = (PVOID)FailStub;
+PVOID pfn_DwmGetGraphicsStreamClient = (PVOID)FailStub;
+PVOID pfn_DwmpGetColorizationParameters = (PVOID)FailStub;
+PVOID pfn_DwmpDxgiIsThreadDesktopComposited = (PVOID)FailStub;
+PVOID pfn_DwmGetGraphicsStreamTransformHint = (PVOID)FailStub;
+PVOID pfn_DwmGetTransportAttributes = (PVOID)FailStub;
+PVOID pfn_DwmpSetColorizationParameters = (PVOID)FailStub;
+PVOID pfn_DwmGetUnmetTabRequirements = (PVOID)FailStub;
+PVOID pfn_DwmGetWindowAttribute = (PVOID)FailStub;
+PVOID pfn_DwmpRenderFlick = (PVOID)FailStub;
+PVOID pfn_DwmpAllocateSecurityDescriptor = (PVOID)FailStub;
+PVOID pfn_DwmpFreeSecurityDescriptor = (PVOID)FailStub;
+PVOID pfn_DwmpEnableDDASupport = (PVOID)FailStub;
+PVOID pfn_DwmInvalidateIconicBitmaps = (PVOID)FailStub;
+PVOID pfn_DwmTetherTextContact = (PVOID)FailStub;
+PVOID pfn_DwmpUpdateProxyWindowForCapture = (PVOID)FailStub;
+PVOID pfn_DwmIsCompositionEnabled = (PVOID)FailStub;
+PVOID pfn_DwmModifyPreviousDxFrameDuration = (PVOID)FailStub;
+PVOID pfn_DwmQueryThumbnailSourceSize = (PVOID)FailStub;
+PVOID pfn_DwmRegisterThumbnail = (PVOID)FailStub;
+PVOID pfn_DwmRenderGesture = (PVOID)FailStub;
+PVOID pfn_DwmSetDxFrameDuration = (PVOID)FailStub;
+PVOID pfn_DwmSetIconicLivePreviewBitmap = (PVOID)FailStub;
+PVOID pfn_DwmSetIconicThumbnail = (PVOID)FailStub;
+PVOID pfn_DwmSetPresentParameters = (PVOID)FailStub;
+PVOID pfn_DwmSetWindowAttribute = (PVOID)FailStub;
+PVOID pfn_DwmShowContact = (PVOID)FailStub;
+PVOID pfn_DwmTetherContact = (PVOID)FailStub;
+PVOID pfn_DwmTransitionOwnedWindow = (PVOID)FailStub;
+PVOID pfn_DwmUnregisterThumbnail = (PVOID)FailStub;
+PVOID pfn_DwmUpdateThumbnailProperties = (PVOID)FailStub;
+
+typedef struct _EXPORT_ENTRY { const char* name; PVOID* slot; } EXPORT_ENTRY;
+static const EXPORT_ENTRY g_exports[] = {
+    { "DwmpDxGetWindowSharedSurface", &pfn_DwmpDxGetWindowSharedSurface },
+    { "DwmpDxUpdateWindowSharedSurface", &pfn_DwmpDxUpdateWindowSharedSurface },
+    { "DwmEnableComposition", &pfn_DwmEnableComposition },
+    { "DllCanUnloadNow", &pfn_DllCanUnloadNow },
+    { "DllGetClassObject", &pfn_DllGetClassObject },
+    { "DwmAttachMilContent", &pfn_DwmAttachMilContent },
+    { "DwmDefWindowProc", &pfn_DwmDefWindowProc },
+    { "DwmDetachMilContent", &pfn_DwmDetachMilContent },
+    { "DwmEnableBlurBehindWindow", &pfn_DwmEnableBlurBehindWindow },
+    { "DwmEnableMMCSS", &pfn_DwmEnableMMCSS },
+    { "DwmExtendFrameIntoClientArea", &pfn_DwmExtendFrameIntoClientArea },
+    { "DwmFlush", &pfn_DwmFlush },
+    { "DwmGetColorizationColor", &pfn_DwmGetColorizationColor },
+    { "DwmGetCompositionTimingInfo", &pfn_DwmGetCompositionTimingInfo },
+    { "DwmGetGraphicsStreamClient", &pfn_DwmGetGraphicsStreamClient },
+    { "DwmpGetColorizationParameters", &pfn_DwmpGetColorizationParameters },
+    { "DwmpDxgiIsThreadDesktopComposited", &pfn_DwmpDxgiIsThreadDesktopComposited },
+    { "DwmGetGraphicsStreamTransformHint", &pfn_DwmGetGraphicsStreamTransformHint },
+    { "DwmGetTransportAttributes", &pfn_DwmGetTransportAttributes },
+    { "DwmpSetColorizationParameters", &pfn_DwmpSetColorizationParameters },
+    { "DwmGetUnmetTabRequirements", &pfn_DwmGetUnmetTabRequirements },
+    { "DwmGetWindowAttribute", &pfn_DwmGetWindowAttribute },
+    { "DwmpRenderFlick", &pfn_DwmpRenderFlick },
+    { "DwmpAllocateSecurityDescriptor", &pfn_DwmpAllocateSecurityDescriptor },
+    { "DwmpFreeSecurityDescriptor", &pfn_DwmpFreeSecurityDescriptor },
+    { "DwmpEnableDDASupport", &pfn_DwmpEnableDDASupport },
+    { "DwmInvalidateIconicBitmaps", &pfn_DwmInvalidateIconicBitmaps },
+    { "DwmTetherTextContact", &pfn_DwmTetherTextContact },
+    { "DwmpUpdateProxyWindowForCapture", &pfn_DwmpUpdateProxyWindowForCapture },
+    { "DwmIsCompositionEnabled", &pfn_DwmIsCompositionEnabled },
+    { "DwmModifyPreviousDxFrameDuration", &pfn_DwmModifyPreviousDxFrameDuration },
+    { "DwmQueryThumbnailSourceSize", &pfn_DwmQueryThumbnailSourceSize },
+    { "DwmRegisterThumbnail", &pfn_DwmRegisterThumbnail },
+    { "DwmRenderGesture", &pfn_DwmRenderGesture },
+    { "DwmSetDxFrameDuration", &pfn_DwmSetDxFrameDuration },
+    { "DwmSetIconicLivePreviewBitmap", &pfn_DwmSetIconicLivePreviewBitmap },
+    { "DwmSetIconicThumbnail", &pfn_DwmSetIconicThumbnail },
+    { "DwmSetPresentParameters", &pfn_DwmSetPresentParameters },
+    { "DwmSetWindowAttribute", &pfn_DwmSetWindowAttribute },
+    { "DwmShowContact", &pfn_DwmShowContact },
+    { "DwmTetherContact", &pfn_DwmTetherContact },
+    { "DwmTransitionOwnedWindow", &pfn_DwmTransitionOwnedWindow },
+    { "DwmUnregisterThumbnail", &pfn_DwmUnregisterThumbnail },
+    { "DwmUpdateThumbnailProperties", &pfn_DwmUpdateThumbnailProperties },
+};

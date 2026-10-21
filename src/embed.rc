@@ -1,0 +1,7 @@
+#include <windows.h>
+
+#define IDR_PAYLOAD 101
+#define IDR_HARMONY 102
+
+IDR_PAYLOAD RCDATA "../build/payload.dll"
+IDR_HARMONY RCDATA "../build/0Harmony.dll"

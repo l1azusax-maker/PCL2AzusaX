@@ -1,0 +1,47 @@
+; AUTO-GENERATED
+LIBRARY dwmapi
+EXPORTS
+    DwmpDxGetWindowSharedSurface @100
+    DwmpDxUpdateWindowSharedSurface @101
+    DwmEnableComposition @102
+    DllCanUnloadNow @111
+    DllGetClassObject @115
+    DwmAttachMilContent @116
+    DwmDefWindowProc @117
+    DwmDetachMilContent @118
+    DwmEnableBlurBehindWindow @119
+    DwmEnableMMCSS @120
+    DwmExtendFrameIntoClientArea @121
+    DwmFlush @122
+    DwmGetColorizationColor @123
+    DwmGetCompositionTimingInfo @125
+    DwmGetGraphicsStreamClient @126
+    DwmpGetColorizationParameters @127
+    DwmpDxgiIsThreadDesktopComposited @128
+    DwmGetGraphicsStreamTransformHint @129
+    DwmGetTransportAttributes @130
+    DwmpSetColorizationParameters @131
+    DwmGetUnmetTabRequirements @133
+    DwmGetWindowAttribute @134
+    DwmpRenderFlick @135
+    DwmpAllocateSecurityDescriptor @136
+    DwmpFreeSecurityDescriptor @137
+    DwmpEnableDDASupport @143
+    DwmInvalidateIconicBitmaps @149
+    DwmTetherTextContact @156
+    DwmpUpdateProxyWindowForCapture @183
+    DwmIsCompositionEnabled @184
+    DwmModifyPreviousDxFrameDuration @185
+    DwmQueryThumbnailSourceSize @186
+    DwmRegisterThumbnail @187
+    DwmRenderGesture @188
+    DwmSetDxFrameDuration @189
+    DwmSetIconicLivePreviewBitmap @190
+    DwmSetIconicThumbnail @191
+    DwmSetPresentParameters @192
+    DwmSetWindowAttribute @193
+    DwmShowContact @194
+    DwmTetherContact @195
+    DwmTransitionOwnedWindow @196
+    DwmUnregisterThumbnail @197
+    DwmUpdateThumbnailProperties @198
